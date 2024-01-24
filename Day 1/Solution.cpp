@@ -47,17 +47,24 @@ private:
         }
         file.close();
     }
-    void _logic()
+
+    vector<string> _split(string input, char delimiter)
     {
-        stringstream splitter(_input);
-        vector<string> words;
-        string word;
+        stringstream splitter(input);
+        string part;
+        vector<string> parts;
         while (!splitter.eof())
         {
-            getline(splitter, word, '\n');
-            words.push_back(word);
+            getline(splitter, part, delimiter);
+            parts.push_back(part);
         }
+        return parts;
+    }
 
+    void _logic()
+    {
+
+        vector<string> words = _split(_input, '\n');
         long long totalSum = 0;
         for (string word : words)
         {
