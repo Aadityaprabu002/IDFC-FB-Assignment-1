@@ -1,5 +1,5 @@
 #include <iostream>
-#include <bits/stdc++.h>
+#include "bits/stdc++.h"
 using namespace std;
 
 class Solution
@@ -85,36 +85,36 @@ private:
     void _checkAllDirectionsAndReplaceIfIsNumber(vector<string> &board, int i, int j)
     {
 
-        if (_checkOutOfBorder(board.size() - 1, board[j].length() - 1, i, j - 1) && isdigit(board[i][j - 1])) // left
+        if (_checkOutOfBorder(board.size() - 1, board[i].length() - 1, i, j - 1) && isdigit(board[i][j - 1])) // left
         {
             board[i][j - 1] += 'A' - '0';
         }
-        if (_checkOutOfBorder(board.size() - 1, board[j].length() - 1, i, j + 1) && isdigit(board[i][j + 1])) // right
+        if (_checkOutOfBorder(board.size() - 1, board[i].length() - 1, i, j + 1) && isdigit(board[i][j + 1])) // right
         {
             board[i][j + 1] += 'A' - '0';
         }
-        if (_checkOutOfBorder(board.size() - 1, board[j].length() - 1, i + 1, j) && isdigit(board[i + 1][j])) // down
+        if (_checkOutOfBorder(board.size() - 1, board[i].length() - 1, i + 1, j) && isdigit(board[i + 1][j])) // down
         {
             board[i + 1][j] += 'A' - '0';
         }
-        if (_checkOutOfBorder(board.size() - 1, board[j].length() - 1, i - 1, j) && isdigit(board[i - 1][j])) // up
+        if (_checkOutOfBorder(board.size() - 1, board[i].length() - 1, i - 1, j) && isdigit(board[i - 1][j])) // up
         {
             board[i - 1][j] += 'A' - '0';
         }
-        if (_checkOutOfBorder(board.size() - 1, board[j].length() - 1, i + 1, j + 1) && isdigit(board[i + 1][j + 1])) // right down
+        if (_checkOutOfBorder(board.size() - 1, board[i].length() - 1, i + 1, j + 1) && isdigit(board[i + 1][j + 1])) // right down
         {
             board[i + 1][j + 1] += 'A' - '0';
         }
-        if (_checkOutOfBorder(board.size() - 1, board[j].length() - 1, i - 1, j - 1) && isdigit(board[i - 1][j - 1])) // left up
+        if (_checkOutOfBorder(board.size() - 1, board[i].length() - 1, i - 1, j - 1) && isdigit(board[i - 1][j - 1])) // left up
         {
 
             board[i - 1][j - 1] += 'A' - '0';
         }
-        if (_checkOutOfBorder(board.size() - 1, board[j].length() - 1, i + 1, j - 1) && isdigit(board[i + 1][j - 1])) // down left
+        if (_checkOutOfBorder(board.size() - 1, board[i].length() - 1, i + 1, j - 1) && isdigit(board[i + 1][j - 1])) // down left
         {
             board[i + 1][j - 1] += 'A' - '0';
         }
-        if (_checkOutOfBorder(board.size() - 1, board[j].length() - 1, i - 1, j + 1) && isdigit(board[i - 1][j + 1])) // up right
+        if (_checkOutOfBorder(board.size() - 1, board[i].length() - 1, i - 1, j + 1) && isdigit(board[i - 1][j + 1])) // up right
         {
             board[i - 1][j + 1] += 'A' - '0';
         }
@@ -130,6 +130,7 @@ private:
             {
                 for (int j = 0; j < board[i].length(); j++)
                 {
+                    
                     if (!isalnum(board[i][j]) && board[i][j] != '.')
                     {
                         _checkAllDirectionsAndReplaceIfIsNumber(board, i, j);
@@ -142,28 +143,31 @@ private:
                 _output += board[i] + "\n";
                 string number = "";
                 bool containsMarker = false;
-                for (int j = 0; j < board[i].length(); j++)
+                for (int j = 0; j <= board[i].length(); j++)
                 {
-                    if ((board[i][j] == '.' || j == board[i].length() - 1) && number.length() != 0)
+                    if (( j == board[i].length() || !isalnum(board[i][j])  ) && number.length() != 0)
                     {
+                      
                         if (containsMarker)
                         {
                             totalSum += stoll(number);
+                            cout<<number<<endl;
                             containsMarker = false;
                         }
 
                         number = "";
                     }
+                    if(j < board[i].length()){
+                        if (isalpha(board[i][j]))
+                        {
+                            containsMarker = true;
+                            board[i][j] = board[i][j] - 'A' + '0';
+                        }
 
-                    if (isalpha(board[i][j]))
-                    {
-
-                        containsMarker = true;
-                        board[i][j] = board[i][j] - 'A' + '0';
+                        if (isdigit(board[i][j]))
+                            number += board[i][j];
                     }
-
-                    if (isdigit(board[i][j]))
-                        number += board[i][j];
+                
                 }
             }
             _output += to_string(totalSum);
