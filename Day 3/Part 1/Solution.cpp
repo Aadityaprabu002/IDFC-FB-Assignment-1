@@ -130,7 +130,7 @@ private:
             {
                 for (int j = 0; j < board[i].length(); j++)
                 {
-                    
+
                     if (!isalnum(board[i][j]) && board[i][j] != '.')
                     {
                         _checkAllDirectionsAndReplaceIfIsNumber(board, i, j);
@@ -145,19 +145,20 @@ private:
                 bool containsMarker = false;
                 for (int j = 0; j <= board[i].length(); j++)
                 {
-                    if (( j == board[i].length() || !isalnum(board[i][j])  ) && number.length() != 0)
+                    if ((j == board[i].length() || !isalnum(board[i][j])) && number.length() != 0)
                     {
-                      
+
                         if (containsMarker)
                         {
                             totalSum += stoll(number);
-                            cout<<number<<endl;
+                            cout << number << endl;
                             containsMarker = false;
                         }
 
                         number = "";
                     }
-                    if(j < board[i].length()){
+                    if (j < board[i].length())
+                    {
                         if (isalpha(board[i][j]))
                         {
                             containsMarker = true;
@@ -167,7 +168,6 @@ private:
                         if (isdigit(board[i][j]))
                             number += board[i][j];
                     }
-                
                 }
             }
             _output += to_string(totalSum);
