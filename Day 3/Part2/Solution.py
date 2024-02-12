@@ -1,3 +1,4 @@
+from pprint import pprint
 class Solution:
     #private
     __input = ''
@@ -13,80 +14,50 @@ class Solution:
             file.write(self.__output)
         pass
     
-    
-    def __check_inside_border_and_isdigit(self,i,j,max_row,max_col):
-        if i < 0 or i > max_row or j < 0 or j > max_col:
-            return False
-        return self.__board[i][j].isdigit()
-
-
-    def __extract_number(self,board,i,j):
-        print(board[i])
-        print(board[i][j])
-        print('')
-
-        r = len(board)
-        c = len(board[0])
-        kr = j
-        kl = j+1
-        num = ''
-        while(True):
-            if kr > c or not board[i][kr].isdigit() :
-                break
-            num+=board[i][kr]
-            kr+=1
-        while(True):
-            if kl < 0 or not board[i][kl].isdigit():
-                break
-            num = board[i][kl] + num
-            kl-=1
-        if num == '':
-            return 1
-        return int(num)
-
-    def __logic(self):
+    def __logic(self): 
         self.__board =  self.__input.split('\n')
+        for i in range(len(self.__board)):
+            self.__board[i] = list(self.__board[i])
         gr = 0
         r = len(self.__board)
         c = len(self.__board[0])
+
         for i in range(r):
             for j in range(c):
                 if self.__board[i][j] == '*':
-                    mul = 1
-                    gears = set()
-                    if self.__check_inside_border_and_isdigit(i+1,j,r,c) : #down
-                        gears.add(self.__extract_number(self.__board,i+1,j))
+                    gear_pos = set()
+                    for di in [-1,0,1]:
+                        for dj in [-1,0,1]:
+                            cur_i = i+di
+                            cur_j = j+dj 
+                          
+                            if (cur_i < 0 or cur_i >= len(self.__board) or \
+                                cur_j < 0 or cur_j >= len(self.__board[cur_i])) or \
+                                not self.__board[cur_i][cur_j].isdigit():  
+                                    continue
+                                                       
+                          
+                            while cur_j > 0 and self.__board[cur_i][cur_j-1].isdigit():
+                                cur_j-=1
+                               
+                            gear_pos.add((cur_i,cur_j))       
+                                
+                    if len(gear_pos) == 2:
+                        nums = []
+                        for x,y in gear_pos:
+                           
+                            ej = y
+                            num = ''
+                            while ej < len(self.__board[x]) and self.__board[x][ej].isdigit():
+                                num += self.__board[x][ej]
+                                ej += 1
+                            nums.append(int(num))
+                       
+                        gr+= nums[0] * nums[1]
 
-                    if self.__check_inside_border_and_isdigit(i-1,j,r,c)  : #up
-                        gears.add(self.__extract_number(self.__board,i-1,j))
-                    
-                    if self.__check_inside_border_and_isdigit(i,j+1,r,c): #right
-                        gears.add(self.__extract_number(self.__board,i+1,j))
-                    
-                    if self.__check_inside_border_and_isdigit(i,j-1,r,c) : #left
-                        gears.add(self.__extract_number(self.__board,i,j-1))
-                    
-                    if self.__check_inside_border_and_isdigit(i+1,j+1,r,c) : #right down
-                        gears.add(self.__extract_number(self.__board,i+1,j+1))
-                    
-                    if self.__check_inside_border_and_isdigit(i-1,j-1,r,c) : #left up
-                        gears.add(self.__extract_number(self.__board,i-1,j-1))
-                    
-                    if self.__check_inside_border_and_isdigit(i+1,j-1,r,c) : #left down
-                        gears.add(self.__extract_number(self.__board,i+1,j-1))
-                    
-                    if self.__check_inside_border_and_isdigit(i-1,j+1,r,c): #right up
-                        gears.add(self.__extract_number(self.__board,i-1,j+1))
+        self.__output += str(gr)
 
-                    if len(gears) == 2:
-                        for i in gears:
-                            mul*i
-                    print(gears)
-                    gr+=mul
-
-        self.__output = str(gr)
-
-
+       
 
     #public
     def run(self):
