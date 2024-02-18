@@ -1,4 +1,5 @@
 from pprint import pprint
+import re
 class Solution:
     #private
     __input = ''
@@ -13,31 +14,26 @@ class Solution:
             file.write(self.__output)
         pass
     
+    
     def __logic(self):
-        report = []
-        for line in self.__input.split('\n'):
-            report.append([list(map(int,line.split(' ')))[::-1]])
-        
-
-        def difference(arr):
-            return [arr[i+1] - arr[i] for i in range(len(arr)-1)]
-
-
-        def add_zero_front(arr):
-            while not all([x == 0 for x in arr[-1]]):
-                arr.append(difference(arr[-1]))   
-            arr[-1]
-            for i in range(len(arr)-2,-1,-1):
-                arr[i].append(arr[i][-1] + arr[i+1][-1])
-            
-            return arr[0][-1]
-
+        numbers = [ 'one', 'two' ,'three', 'four' ,'five' ,'six', 'seven' ,'eight' ,'nine']
+        regex = "(?=(" + "|".join(numbers) +"|\\d))"
+        words = self.__input.split('\n')
         tot = 0
-        for i in range(len(report)):
-            tot += add_zero_front(report[i])
-
-        self.__output = str(tot)
-
+        for word in words:
+            res = re.findall(regex,word)
+            first = res[0]
+            last = res[-1]
+            if first in numbers:
+                first = str(numbers.index(first)+1)
+            if last in numbers:
+                last = str(numbers.index(last)+1)
+            
+            first += last
+            print(first)
+            tot += int(first)
+       
+        self.__output += str(tot)
 
 
     #public
