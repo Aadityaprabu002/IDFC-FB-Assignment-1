@@ -3,17 +3,30 @@ class Solution:
     __input = ''
     __output = ''
     def __read_input(self):
-        with open('input.txt') as file:
+        with open('input.txt','r') as file:
             self.__input = file.read()
 
         
     def __write_output(self):
-        with open('output.txt') as file:
+        with open('output.txt','w') as file:
             file.write(self.__output)
         pass
     
     def __logic(self):
-        pass
+        def hash(c,h):
+            h += ord(c)
+            h *= 17
+            h %= 256
+            return h
+
+        words = self.__input.split(',')
+        tot = 0
+        for word in words:
+            h = 0
+            for char in word:
+                h = hash(char,h)
+            tot+=h
+        self.__output = str(tot)
 
     #public
     def run(self):
